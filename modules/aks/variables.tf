@@ -1,4 +1,4 @@
-variable "resource_group_name" {
+variable "cluster_name" {
   type = string
 }
 
@@ -6,7 +6,7 @@ variable "location" {
   type = string
 }
 
-variable "aks_cluster_name" {
+variable "resource_group_name" {
   type = string
 }
 
@@ -19,5 +19,13 @@ variable "node_count" {
 }
 
 variable "vm_size" {
+  type = string
+}
+
+variable "subnet_id" {
+  type = string
+}
+
+variable "log_analytics_workspace_id" {
   type = string
 }

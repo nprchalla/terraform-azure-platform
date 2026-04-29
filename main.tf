@@ -28,3 +28,15 @@ module "log_analytics" {
   location            = var.location
   resource_group_name = module.resource_group.name
 }
+
+module "aks" {
+  source                     = "./modules/aks"
+  cluster_name               = var.aks_cluster_name
+  location                   = var.location
+  resource_group_name        = module.resource_group.name
+  dns_prefix                 = var.dns_prefix
+  node_count                 = var.node_count
+  vm_size                    = var.vm_size
+  subnet_id                  = module.network.subnet_id
+  log_analytics_workspace_id = module.log_analytics.workspace_id
+}
