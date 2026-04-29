@@ -1,12 +1,12 @@
 # Terraform Azure Platform 🚀
 
-This project demonstrates a modular Infrastructure as Code (IaC) setup using Terraform to provision Azure resources.
+This project demonstrates a **modular Infrastructure as Code (IaC)** setup using Terraform to provision Azure infrastructure and deploy a Kubernetes cluster (AKS).
 
 ---
 
 ## 📌 Project Overview
 
-This project creates and manages Azure infrastructure using Terraform with a modular and reusable design.
+This project creates and manages Azure infrastructure using Terraform with a **modular and reusable design**, and deploys an AKS cluster integrated with networking and monitoring.
 
 ### Resources created:
 
@@ -15,6 +15,7 @@ This project creates and manages Azure infrastructure using Terraform with a mod
 * Subnet
 * Network Security Group (NSG)
 * Log Analytics Workspace
+* Azure Kubernetes Service (AKS)
 
 ---
 
@@ -25,7 +26,9 @@ Resource Group
    ├── Virtual Network (VNet)
    │      └── Subnet
    │             └── Network Security Group (NSG)
-   └── Log Analytics Workspace
+   ├── Log Analytics Workspace
+   └── AKS Cluster
+         └── Node Pool (VMSS)
 ```
 
 ---
@@ -44,7 +47,8 @@ terraform-azure-platform/
 │   ├── resource_group/
 │   ├── network/
 │   ├── nsg/
-│   └── log_analytics/
+│   ├── log_analytics/
+│   └── aks/
 │
 └── env/
     └── dev/
@@ -55,26 +59,18 @@ terraform-azure-platform/
 
 ## ⚙️ Prerequisites
 
-Make sure you have the following installed:
-
 * Terraform
 * Azure CLI
+* kubectl
 * Git
-* VS Code (recommended)
+* VS Code
 
 ---
 
 ## 🔐 Authentication
 
-Login to Azure:
-
 ```bash
 az login
-```
-
-Select your subscription:
-
-```bash
 az account set --subscription "Azure subscription 1"
 ```
 
@@ -82,35 +78,62 @@ az account set --subscription "Azure subscription 1"
 
 ## 🚀 How to Deploy
 
-Initialize Terraform:
-
 ```bash
 terraform init
-```
-
-Validate configuration:
-
-```bash
 terraform validate
-```
-
-Plan deployment:
-
-```bash
 terraform plan -var-file="env/dev/terraform.tfvars"
-```
-
-Apply changes:
-
-```bash
 terraform apply -var-file="env/dev/terraform.tfvars"
 ```
 
 ---
 
-## 🧹 Destroy Resources
+## ☸️ AKS Verification
 
-To clean up resources:
+Get cluster credentials:
+
+```bash
+az aks get-credentials --resource-group rg-dev-terraform-demo --name aks-dev-platform
+```
+
+Verify nodes:
+
+```bash
+kubectl get nodes
+```
+
+Expected:
+
+```text
+STATUS = Ready
+```
+
+---
+
+## 🌐 Deploy Sample Application (Nginx)
+
+Apply deployment:
+
+```bash
+kubectl apply -f k8s/nginx-deployment.yaml
+```
+
+Check pods:
+
+```bash
+kubectl get pods
+```
+
+Check service:
+
+```bash
+kubectl get svc
+```
+
+Access application using **EXTERNAL-IP**
+
+---
+
+## 🧹 Cleanup (Important for Free Trial)
 
 ```bash
 terraform destroy -var-file="env/dev/terraform.tfvars"
@@ -118,24 +141,25 @@ terraform destroy -var-file="env/dev/terraform.tfvars"
 
 ---
 
-## 🧠 Key Concepts Learned
+## 🧠 Skills Practiced
 
-* Terraform modules for reusable infrastructure
-* Azure resource provisioning using Terraform
-* Dependency management between resources
-* Infrastructure validation and planning
-* State management basics
-* Networking concepts (VNet, Subnet, NSG)
+* Terraform modular architecture
+* Azure networking (VNet, Subnet, NSG)
+* AKS provisioning and configuration
+* Log Analytics integration
+* Kubernetes basics (kubectl, deployments, services)
+* Infrastructure dependency management
+* Git & GitHub workflow
 
 ---
 
 ## 🔄 Future Improvements
 
-* Add AKS (Azure Kubernetes Service)
-* Implement remote backend (Azure Storage)
-* Add CI/CD pipeline (Azure DevOps / GitHub Actions)
-* Introduce multi-environment support (dev, stage, prod)
-* Add monitoring dashboards
+* Remote backend (Azure Storage)
+* CI/CD pipeline (GitHub Actions / Azure DevOps)
+* Multi-environment setup (dev/stage/prod)
+* Private AKS cluster
+* Helm deployments
 
 ---
 
